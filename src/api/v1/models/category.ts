@@ -10,12 +10,14 @@ const categorySchema = new Schema<ICategory>(
     categoryName: {
       type: String,
       required: true,
+      unique: true,
+      maxlength: 32
     },
     menuList: [
       {
         menu: {
           type: Schema.Types.ObjectId,
-          ref: "menu",
+          ref: "Menu",
         },
       },
     ],

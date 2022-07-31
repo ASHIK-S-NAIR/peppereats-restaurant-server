@@ -1,12 +1,14 @@
-import { config } from "dotenv";
-config();
-
+import dotenv from "dotenv";
 import express, { Express, Request, Response, NextFunction } from "express";
 import { connect } from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
+// const path = require("path");
+
+// dotenv.config({ path: path.resolve(__dirname, "/.env") });
 
 const categoryRoute = require("./src/api/v1/routes/category");
+const authRoute = require("./src/api/v1/routes/auth");
 
 const app: Express = express();
 
@@ -24,6 +26,7 @@ connect("mongodb://localhost:27017/peppereats")
   });
 
 app.use("/api/v1", categoryRoute);
+app.use("/api/v1", authRoute);
 
 app.get("/", (req: Request, res: Response) => {
   console.log("Working properly");
