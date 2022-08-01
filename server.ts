@@ -3,9 +3,12 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import { connect } from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
+
 // const path = require("path");
 
 // dotenv.config({ path: path.resolve(__dirname, "/.env") });
+
+// const connectConfig = require("./setup/config");
 
 const categoryRoute = require("./src/api/v1/routes/category");
 const authRoute = require("./src/api/v1/routes/auth");
@@ -24,6 +27,7 @@ connect("mongodb://localhost:27017/peppereats")
   .catch((err) => {
     console.log("DB Error", err.message);
   });
+// connectConfig();
 
 app.use("/api/v1", categoryRoute);
 app.use("/api/v1", authRoute);

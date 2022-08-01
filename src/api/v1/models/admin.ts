@@ -32,11 +32,13 @@ const adminSchema = new Schema<IAdmin>(
       type: Number,
       required: true,
       unique: true,
+      maxlength: 10
     },
     adminEmail: {
       type: String,
       unique: true,
       maxlength: 32,
+      required: true
     },
     adminEncry_password: String,
     salt: String,

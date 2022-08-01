@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-export const signupValidationSchema = [
+export const adminSignupValidationSchema = [
   body("userFirstName")
     .exists({ checkNull: true, checkFalsy: true })
     .withMessage("userFirstName is required")
@@ -25,9 +25,22 @@ export const signupValidationSchema = [
     .withMessage("user Phone Number is required")
     .isNumeric()
     .withMessage("user Phone Number must be number")
-    .isLength({ max: 10 })
+    .isLength({ min:10, max: 10 })
     .withMessage("user phone number must be 10 digits"),
   body("userPassword")
     .isLength({ min: 6 })
     .withMessage("password must be atleat 6 characters"),
+];
+
+export const adminLoginValidationSchema = [
+  body("userPhoneNumber")
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage("user Phone Number is required")
+    .isNumeric()
+    .withMessage("user Phone Number must be number")
+    .isLength({ min:10, max:10 })
+    .withMessage("user phone number must be 10 digits"),
+  body("userPassword")
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage("user password is required"),
 ];

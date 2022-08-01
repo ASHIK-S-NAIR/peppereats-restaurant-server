@@ -1,9 +1,26 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { validateRequestSchema } from "../middlewares/validate-request-schema";
-import { signupValidationSchema } from "../validationSchema/authSchema";
+import {
+  adminLoginValidationSchema,
+  adminSignupValidationSchema,
+} from "../validationSchema/authSchema";
+import { adminLogin, adminSignup, logout } from "../controllers/auth";
 const router = express.Router();
-const { adminSignup } = require("../controllers/auth");
 
-router.post("/adminsignup", signupValidationSchema, validateRequestSchema, adminSignup);
+router.post(
+  "/adminsignup",
+  adminSignupValidationSchema,
+  validateRequestSchema,
+  adminSignup
+);
+
+router.post(
+  "/adminlogin",
+  adminLoginValidationSchema,
+  validateRequestSchema,
+  adminLogin
+);
+
+router.post("/logout", logout);
 
 export = router;
