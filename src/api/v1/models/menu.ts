@@ -31,12 +31,10 @@ const menuSchema = new Schema<IMenu>({
     },
     menuImage: {
         publicId: {
-            type: String,
-            required: true
+            type: String
         },
         url: {
-            type: String,
-            required: true
+            type: String
         }
     }
 }, {timestamps: true})

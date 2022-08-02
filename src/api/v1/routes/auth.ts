@@ -4,7 +4,7 @@ import {
   adminLoginValidationSchema,
   adminSignupValidationSchema,
 } from "../validationSchema/authSchema";
-import { adminLogin, adminSignup, logout } from "../controllers/auth";
+import {adminLogin, adminSignup, logout} from "../controllers/auth";
 const router = express.Router();
 
 router.post(

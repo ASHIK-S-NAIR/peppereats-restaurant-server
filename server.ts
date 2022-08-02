@@ -3,6 +3,7 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import { connect } from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
+import helmet from "helmet";
 
 // const path = require("path");
 
@@ -12,11 +13,13 @@ import cors from "cors";
 
 const categoryRoute = require("./src/api/v1/routes/category");
 const authRoute = require("./src/api/v1/routes/auth");
+const menuRoute = require("./src/api/v1/routes/menu");
 
 const app: Express = express();
 
 app.use(cors());
 app.use(morgan("dev"));
+app.use(helmet());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -31,6 +34,7 @@ connect("mongodb://localhost:27017/peppereats")
 
 app.use("/api/v1", categoryRoute);
 app.use("/api/v1", authRoute);
+app.use("/api/v1", menuRoute);
 
 app.get("/", (req: Request, res: Response) => {
   console.log("Working properly");
