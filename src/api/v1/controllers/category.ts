@@ -12,7 +12,10 @@ exports.getCategories = async (req: Request, res: Response) => {
   }
 };
 
-exports.postCategory = async (req: Request, res: Response) => {
+exports.postCategory = async (
+  req: Request<{}, {}, { categoryName: "string" }, {}>,
+  res: Response
+) => {
   const categoryName = req.body.categoryName;
   try {
     console.log("Post works");

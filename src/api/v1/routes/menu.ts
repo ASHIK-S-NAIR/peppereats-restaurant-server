@@ -1,8 +1,9 @@
-import express from "express";
+import express,{Request} from "express";
 import { createMenu, getAllMenu, getMenu, getMenuByCategory } from "../controllers/menu";
 import { getMenuById } from "../middlewares/menu";
 import { validateRequestSchema } from "../middlewares/validate-request-schema";
 import { menuPostValidationSchema } from "../validationSchema/menuSchema";
+
 const multer = require("multer");
 
 var upload = multer({ dest: "uploads/" });
@@ -19,7 +20,7 @@ router.post(
   createMenu
 );
 router.get("/allmenu", getAllMenu);
-router.get("/menubycategory/:menucategory", getMenuByCategory);
-router.get(".menu/getmenu/:menuId", getMenu);
+router.get("/menubycategory/:categoryId", getMenuByCategory);
+router.get("/menu/getmenu/:menuId", getMenu);
 
-export = router;
+module.exports = router;

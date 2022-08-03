@@ -13,4 +13,4 @@ router.post(
   postCategory
 );
 
-export = router;
+module.exports = router;

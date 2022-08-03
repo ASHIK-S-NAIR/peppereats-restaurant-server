@@ -1,22 +1,16 @@
-import { Request, Response, NextFunction, RequestParamHandler } from "express";
+import { Request, Response, NextFunction, Router } from "express";
 const Menu = require("../models/menu");
 
-interface Imenu extends Request {
-  menu: object;
-}
-
 export const getMenuById = async (
-  req: Request<{},{},{},{}>,
+  req: Request,
   res: Response,
   next: NextFunction,
-  id: any
+  id: Router
 ) => {
   try {
     const menu = await Menu.findById({ _id: id });
-    req.menu = menu;
-    console.log("menu", menu);
-    console.log("reqMenu", req.menu);
-    // res.send("all good");
+    // req.menu = menu;
+    console.log("menu is", menu);
     next();
   } catch (error: any) {
     console.log("error message", error.message);

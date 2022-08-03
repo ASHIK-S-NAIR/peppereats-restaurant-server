@@ -3,7 +3,21 @@ import jwt from "jsonwebtoken";
 import expressJwt from "express-jwt";
 const Admin = require("../models/admin");
 
-export const adminSignup = async (req: Request, res: Response) => {
+export const adminSignup = async (
+  req: Request<
+    {},
+    {},
+    {
+      userFirstName: "string";
+      userLastName: "string";
+      userPhoneNumber: "number";
+      userEmail: "string";
+      userPassword: "string";
+    },
+    {}
+  >,
+  res: Response
+) => {
   try {
     const {
       userFirstName,
@@ -32,7 +46,15 @@ export const adminSignup = async (req: Request, res: Response) => {
   }
 };
 
-export const adminLogin = async (req: Request, res: Response) => {
+export const adminLogin = async (
+  req: Request<
+    {},
+    {},
+    { userPhoneNumber: "number"; userPassword: "string" },
+    {}
+  >,
+  res: Response
+) => {
   try {
     const { userPhoneNumber, userPassword } = req.body;
     const admin = await Admin.findOne({ adminPhoneNumber: userPhoneNumber });

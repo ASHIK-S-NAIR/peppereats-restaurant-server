@@ -2,7 +2,20 @@ import { Request, Response, NextFunction } from "express";
 const Menu = require("../models/menu");
 const cloudinary = require("../utils/cloudinary");
 
-export const createMenu = async (req: Request, res: Response) => {
+export const createMenu = async (
+  req: Request<
+    {},
+    {},
+    {
+      menuName: "string";
+      menuCategory: "number";
+      menuPrice: "number";
+      menuDescription: "string";
+    },
+    {}
+  >,
+  res: Response
+) => {
   try {
     const { menuName, menuCategory, menuPrice, menuDescription } = req.body;
 
@@ -55,10 +68,13 @@ export const getAllMenu = async (req: Request, res: Response) => {
   }
 };
 
-export const getMenuByCategory = async (req: Request, res: Response) => {
+export const getMenuByCategory = async (
+  req: Request<{ categoryId: "number" }, {}, {}, {}>,
+  res: Response
+) => {
   try {
-    const {menucategory} = req.params;
-    const menu = await Menu.find({ menuCategory: menucategory });
+    const { categoryId } = req.params;
+    const menu = await Menu.find({ menuCategory: categoryId });
     return res.status(200).json(menu);
   } catch (error: any) {
     console.log("error message", error.message);
@@ -71,9 +87,11 @@ export const getMenuByCategory = async (req: Request, res: Response) => {
 export const getMenu = async (req: Request, res: Response) => {
   try {
     // res.status(200).json(req.menu)
+    console.log("reached getMenu")
+    return res.json({message: "successful"});
   } catch (error) {
     return res.status(400).json({
       message: "Failed to get menu from database",
     });
   }
-}
+};
