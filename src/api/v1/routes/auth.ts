@@ -3,7 +3,7 @@ import { validateRequestSchema } from "../middlewares/validate-request-schema";
 import {
   adminLoginValidationSchema,
   adminSignupValidationSchema,
-} from "../validationSchema/authSchema";
+} from "../middlewares/validationSchema/authSchema";
 import {adminLogin, adminSignup, logout} from "../controllers/auth";
 const router = express.Router();
 

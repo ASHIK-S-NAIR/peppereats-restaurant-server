@@ -9,3 +9,12 @@ export const categoryPostValidationSchema = [
     .isLength({ max: 32 })
     .withMessage("categoryName legnth must be within 32"),
 ];
+
+export const categoryPutValidationSchema = [
+  body("categoryName")
+    .optional()
+    .isString()
+    .withMessage("categoryName must be as string")
+    .isLength({ max: 32 })
+    .withMessage("categoryName legnth must be within 32"),
+];
