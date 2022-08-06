@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import expressJwt from "express-jwt";
+import { expressjwt, Request as JWTRequest } from "express-jwt";
+// const expressJWT = require("express-jwt");
 const Admin = require("../models/admin");
 
 export const adminSignup = async (
@@ -105,4 +106,38 @@ export const logout = async (req: Request, res: Response) => {
   return res.status(200).json({
     message: "Logout Successfull",
   });
+};
+
+// export const isSignedIn = expressjwt({
+//   secret: "pepperEatsSecret",
+//   algorithms: ["HS256"],
+//   userProperty: "auth",
+// });
+
+
+// app.get(
+//   "/protected",
+//   expressjwt({ secret: "pepperEatsSecret", algorithms: ["HS256"] }),
+//   function (req: JWTRequest, res: express.Response) {
+//     if (!req.auth?.admin) return res.sendStatus(401);
+//     res.sendStatus(200);
+//   }
+// );
+
+export const isAuthenticated = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const checker = req.profile && req.auth && req.profile._id == req.auth._id;
+    if (!checker) {
+      return res.status(400).json({ message: "Authentication Failed" });
+    }
+    next();
+  } catch (error) {
+    return res.status(400).json({
+      message: "Failed to authenticate user",
+    });
+  }
 };

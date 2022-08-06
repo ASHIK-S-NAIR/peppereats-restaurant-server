@@ -4,7 +4,7 @@ const Admin = require("../models/admin");
 export const getAdminById = (req: Request, res:Response, next: NextFunction, id: Router) => {
     try {
         const admin = Admin.findById({_id: id});
-        req.admin = admin;
+        req.profile = admin;
         next();
     } catch (error) {
         return res.status(400).json({

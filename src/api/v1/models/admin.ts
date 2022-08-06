@@ -9,6 +9,7 @@ interface IAdmin {
   adminEmail: String;
   adminEncry_password: String;
   salt: String;
+  role: Number;
   password: String;
   _password: String;
   securePassword: Function;
@@ -32,16 +33,20 @@ const adminSchema = new Schema<IAdmin>(
       type: Number,
       required: true,
       unique: true,
-      maxlength: 10
+      maxlength: 10,
     },
     adminEmail: {
       type: String,
       unique: true,
       maxlength: 32,
-      required: true
+      required: true,
     },
     adminEncry_password: String,
     salt: String,
+    role: {
+      type: Number,
+      default: 1,
+    },
   },
   { timestamps: true }
 );

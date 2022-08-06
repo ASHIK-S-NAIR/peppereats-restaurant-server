@@ -4,7 +4,7 @@ const Customer = require("../models/customer");
 export const getCustomerById = (req: Request, res:Response, next: NextFunction, id: Router) => {
     try {
         const customer = Customer.findById({_id: id});
-        req.customer = customer;
+        req.profile = customer;
         next();
     } catch (error) {
         return res.status(400).json({

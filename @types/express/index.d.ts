@@ -6,8 +6,8 @@ declare global {
         interface Request {
             menu ?: any,
             category ?: any,
-            admin ?: any,
-            customer ?: any
+            profile ?: any,
+            auth ?: any,
         }
     }
 }

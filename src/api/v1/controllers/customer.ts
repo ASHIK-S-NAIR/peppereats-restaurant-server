@@ -3,7 +3,7 @@ const Customer = require("../models/customer");
 
 export const getCustomer = async (req: Request, res: Response) => {
   try {
-    return res.status(200).json(req.customer);
+    return res.status(200).json(req.profile);
   } catch (error) {
     return res.status(400).json({
       message: "Failed to get customer from database",
@@ -14,7 +14,7 @@ export const getCustomer = async (req: Request, res: Response) => {
 export const updateCustomer = async (req: Request, res: Response) => {
   try {
     await Customer.findByIdAndUpdate(
-      { _id: req.customer._id },
+      { _id: req.profile._id },
       { $set: req.body },
       { new: true }
     );
@@ -31,7 +31,7 @@ export const updateCustomer = async (req: Request, res: Response) => {
 
 export const deleteCustomer = async (req: Request, res: Response) => {
   try {
-    await Customer.deleteOne({ _id: req.customer._id });
+    await Customer.deleteOne({ _id: req.profile._id });
     return res.status(200).json({
       message: "Successfully deleted the customer",
     });

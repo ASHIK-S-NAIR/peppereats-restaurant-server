@@ -3,7 +3,7 @@ const Admin = require("../models/admin");
 
 export const getAdmin = async (req: Request, res: Response) => {
   try {
-    return res.status(200).json(req.admin);
+    return res.status(200).json(req.profile);
   } catch (error) {
     return res.status(400).json({
       message: "Failed to get admin from database",
@@ -14,7 +14,7 @@ export const getAdmin = async (req: Request, res: Response) => {
 export const updateAdmin = async (req: Request, res: Response) => {
   try {
     await Admin.findByIdAndUpdate(
-      { _id: req.admin._id },
+      { _id: req.profile._id },
       { $set: req.body },
       { new: true }
     );
@@ -31,7 +31,7 @@ export const updateAdmin = async (req: Request, res: Response) => {
 
 export const deleteAdmin = async (req: Request, res: Response) => {
   try {
-    await Admin.deleteOne({ _id: req.admin._id });
+    await Admin.deleteOne({ _id: req.profile._id });
     return res.status(200).json({
       message: "Successfully deleted the admin",
     });

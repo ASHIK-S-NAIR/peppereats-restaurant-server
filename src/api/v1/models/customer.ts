@@ -6,6 +6,7 @@ interface ICustomer {
   customerPhoneNumber: number;
   customerEmail: string;
   customerReservation: [object];
+  role: Number;
 }
 
 const customerSchema = new Schema<ICustomer>(
@@ -40,6 +41,10 @@ const customerSchema = new Schema<ICustomer>(
         },
       },
     ],
+    role: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
