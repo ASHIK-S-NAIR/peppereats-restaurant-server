@@ -8,6 +8,7 @@ declare global {
             category ?: any,
             profile ?: any,
             auth ?: any,
+            user ?: any
         }
     }
 }

@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { isAdmin, isAuthenticated, isSignedIn } from "../middlewares/auth";
 import {
   createMenu,
   deleteMenu,
@@ -28,6 +29,9 @@ router.param("categoryId", getCategoryById);
 
 router.post(
   "/menu/createmenu",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
   upload.single("menuImage"),
   menuPostValidationSchema,
   validateRequestSchema,
@@ -38,17 +42,29 @@ router.get("/menu/getmenubycategory/:categoryId", getMenuByCategory);
 router.get("/menu/getmenu/:menuId", getMenu);
 router.put(
   "/menu/updatemenu/:menuId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
   menuPutValidationSchema,
   validateRequestSchema,
   updateMenu
 );
 router.put(
   "/menu/updatemenuimage/:menuId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
   menuPutmenuImageValidationSchema,
   validateRequestSchema,
   upload.single("menuImage"),
   updateMenuImage
 );
-router.delete("/menu/deletemenu/:menuId", deleteMenu);
+router.delete(
+  "/menu/deletemenu/:menuId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  deleteMenu
+);
 
 module.exports = router;

@@ -4,7 +4,14 @@ import {
   adminLoginValidationSchema,
   adminSignupValidationSchema,
 } from "../middlewares/validationSchema/authSchema";
-import {adminLogin, adminSignup, logout} from "../controllers/auth";
+import {
+  adminLogin,
+  adminSignup,
+  customerLogin,
+  customerSignupOtp,
+  customerSignupVerify,
+  logout,
+} from "../controllers/auth";
 const router = express.Router();
 
 router.post(
@@ -20,6 +27,12 @@ router.post(
   validateRequestSchema,
   adminLogin
 );
+
+router.post("/customerlogin", customerLogin);
+
+router.post("/customersignupotp", customerSignupOtp);
+
+router.post("/customersignupverify", customerSignupVerify);
 
 router.post("/logout", logout);
 

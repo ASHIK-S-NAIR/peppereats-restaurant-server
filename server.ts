@@ -1,19 +1,15 @@
 import dotenv from "dotenv";
+dotenv.config();
 import express, { Express, Request, Response, NextFunction } from "express";
 import { connect } from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
 import helmet from "helmet";
 
-// const path = require("path");
-
-// dotenv.config({ path: path.resolve(__dirname, "/.env") });
-
-// const connectConfig = require("./setup/config");
-
 const categoryRoute = require("./src/api/v1/routes/category");
 const authRoute = require("./src/api/v1/routes/auth");
 const menuRoute = require("./src/api/v1/routes/menu");
+const adminRoute = require("./src/api/v1/routes/admin");
 
 const app: Express = express();
 
@@ -23,9 +19,9 @@ app.use(helmet());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const PORT: any = process.env.PORT ?? 4000;
+const PORT: any = (process.env.PORT as string) ?? 4000;
 
-connect("mongodb://localhost:27017/peppereats")
+connect(process.env.DATABASE as string)
   .then(() => console.log("DB connected"))
   .catch((err) => {
     console.log("DB Error", err.message);
@@ -35,6 +31,7 @@ connect("mongodb://localhost:27017/peppereats")
 app.use("/api/v1", categoryRoute);
 app.use("/api/v1", authRoute);
 app.use("/api/v1", menuRoute);
+app.use("/api/v1", adminRoute);
 
 app.get("/", (req: Request, res: Response) => {
   console.log("Working properly");
