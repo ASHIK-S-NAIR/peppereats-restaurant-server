@@ -7,7 +7,8 @@ import {
 import {
   adminLogin,
   adminSignup,
-  customerLogin,
+  customerLoginOtp,
+  customerLoginVerify,
   customerSignupOtp,
   customerSignupVerify,
   logout,
@@ -28,7 +29,9 @@ router.post(
   adminLogin
 );
 
-router.post("/customerlogin", customerLogin);
+router.post("/customerloginotp", customerLoginOtp);
+
+router.post("/customerloginverify", customerLoginVerify);
 
 router.post("/customersignupotp", customerSignupOtp);
 

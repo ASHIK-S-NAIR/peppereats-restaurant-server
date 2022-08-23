@@ -10,6 +10,7 @@ const categoryRoute = require("./src/api/v1/routes/category");
 const authRoute = require("./src/api/v1/routes/auth");
 const menuRoute = require("./src/api/v1/routes/menu");
 const adminRoute = require("./src/api/v1/routes/admin");
+const customerRoute = require("./src/api/v1/routes/cutomer");
 
 const app: Express = express();
 
@@ -32,6 +33,7 @@ app.use("/api/v1", categoryRoute);
 app.use("/api/v1", authRoute);
 app.use("/api/v1", menuRoute);
 app.use("/api/v1", adminRoute);
+app.use("/api/v1", customerRoute);
 
 app.get("/", (req: Request, res: Response) => {
   console.log("Working properly");

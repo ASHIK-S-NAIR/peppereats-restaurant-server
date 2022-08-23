@@ -36,9 +36,19 @@ export const deleteCustomer = async (req: Request, res: Response) => {
       message: "Successfully deleted the customer",
     });
   } catch (error: any) {
-    console.log("error Message", error.message);
     return res.status(400).json({
       message: "Failed to delete customer from database",
     });
   }
 };
+
+export const getAllCustomers = async (req: Request, res: Response) => {
+  try {
+    const customers = await Customer.find({});
+    return res.status(200).json(customers);
+  } catch (error: any) {
+    return res.status(400).json({
+      message: "Failed to get all customers from database",
+    });
+  }
+}

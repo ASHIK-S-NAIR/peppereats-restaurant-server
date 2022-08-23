@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 const Menu = require("../models/menu");
 const cloudinary = require("../utils/cloudinary");
 const fs = require("fs");
@@ -53,7 +53,6 @@ export const createMenu = async (
 
     res.status(200).json({ message: "upload Succesfull" });
   } catch (error: any) {
-    console.log("error message", error.message);
     return res.status(400).json({
       message: "Failed to upload menu",
     });
@@ -65,7 +64,6 @@ export const getAllMenu = async (req: Request, res: Response) => {
     const menu = await Menu.find({});
     return res.status(200).json(menu);
   } catch (error: any) {
-    console.log("error message", error.message);
     return res.status(400).json({
       message: "Failed to get menu",
     });
@@ -113,7 +111,6 @@ export const updateMenu = async (req: Request, res: Response) => {
 };
 
 export const updateMenuImage = async (req: Request, res: Response) => {
-  console.log("remenu", req.menu);
   try {
     let result = await cloudinary.uploader.destroy(
       `${req.menu.menuName}_${req.menu._id}`,

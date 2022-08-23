@@ -51,22 +51,15 @@ export const adminSignup = async (
 };
 
 export const adminLogin = async (
-  req: Request<
-    {},
-    {},
-    { userPhoneNumber: "number"; userPassword: "string" },
-    {}
-  >,
+  req: Request<{}, {}, { userEmail: "string"; userPassword: "string" }, {}>,
   res: Response
 ) => {
   try {
-    const { userPhoneNumber, userPassword } = req.body;
-    const admin = await Admin.findOne({ adminPhoneNumber: userPhoneNumber });
+    const { userEmail, userPassword } = req.body;
+    const admin = await Admin.findOne({ adminEmail: userEmail });
 
     if (!admin) {
-      return res
-        .status(400)
-        .json({ error: " Invalid phonenumber or password" });
+      return res.status(400).json({ error: " Invalid email or password" });
     }
 
     if (admin.authenticate(userPassword)) {
@@ -82,6 +75,7 @@ export const adminLogin = async (
         adminLastName,
         adminPhoneNumber,
         adminEmail,
+        role,
       } = admin;
 
       return res.status(200).json({
@@ -92,11 +86,12 @@ export const adminLogin = async (
           adminLastName,
           adminPhoneNumber,
           adminEmail,
+          role,
         },
       });
     }
 
-    return res.status(400).json({ error: " Invalid phonenumber or password" });
+    return res.status(400).json({ error: " Invalid Email or password" });
   } catch (error) {
     return res.status(400).json({
       message: "Failed to login Admin",
@@ -111,59 +106,7 @@ export const logout = async (req: Request, res: Response) => {
   });
 };
 
-// export const findCustomer = async (req: Request, res: Response) => {
-//   try {
-//     const { userPhoneNumber } = req.body;
-//     const customer = Customer.findOne({ customerPhoneNumber: userPhoneNumber });
-//     if (!customer) {
-//       return res.status(200).json({ isCustomer: false });
-//     }
-
-//     return res.status(200).json({ isCustomer: true });
-//   } catch (error) {
-//     return res.status(404).json({
-//       message: "cusotmer checking failed",
-//     });
-//   }
-// };
-
-// export const makeOtp = async (phonenumber: number) => {
-//   try {
-//     await client.verify.v2
-//       .services(process.env.TWILIO_SERVICE_ID as string)
-//       .verifications.create({ to: `+91${phonenumber}`, channel: "sms" })
-//       .then((verification: any) => {
-//         console.log("verfication", verification);
-//         return verification;
-//       })
-//       .catch((error: any) => {
-//         return `Error with otp, ${error}`;
-//       });
-//   } catch (error: any) {
-//     console.log(error.message);
-//     return "Error for otp generation";
-//   }
-// };
-
-// export const verifyOtp = (phoneNumber: number, otp: string) => {
-//   try {
-//     client.verify.v2
-//       .services(process.env.TWILIO_SERVICE_ID)
-//       .verificationChecks.create({ to: `+91${phoneNumber}`, code: otp })
-//       .then((verification_check: any) => {
-//         console.log("Verfication_check_stock", verification_check);
-//         return verification_check;
-//       })
-//       .catch((error: any) => {
-//         return `Error with verify, ${error}`;
-//       });
-//   } catch (error: any) {
-//     console.log(error.message);
-//     return "Error for otp verification";
-//   }
-// };
-
-export const customerLogin = async (req: Request, res: Response) => {
+export const customerLoginOtp = async (req: Request, res: Response) => {
   try {
     const { userPhoneNumber } = req.body;
 
@@ -174,21 +117,73 @@ export const customerLogin = async (req: Request, res: Response) => {
       return res.status(200).json({ isCustomer: false });
     }
 
-    // const response = await makeOtp(userPhoneNumber);
-    // console.log("response", response);
-
-    return res.send("reached her send");
-    // .then((verfication: any) => {
-    //   return res.status(200).json({
-    //     isCustomer: true,
-    //     verfication,
-    //   });
-    // });
+    await client.verify.v2
+      .services(process.env.TWILIO_SERVICE_ID as string)
+      .verifications.create({ to: `+91${userPhoneNumber}`, channel: "sms" })
+      .then((verification: any) => {
+        console.log("verfication", verification);
+        return res.status(200).json({ isCustomer: true, verification });
+      })
+      .catch((error: any) => {
+        return `Error with otp, ${error}`;
+      });
   } catch (error) {
     return res.status(404).json({
       message: "cusotmer login failed",
     });
   }
+};
+
+export const customerLoginVerify = async (req: Request, res: Response) => {
+  const { userPhoneNumber, otp } = req.body;
+  await client.verify.v2
+    .services(process.env.TWILIO_SERVICE_ID)
+    .verificationChecks.create({ to: `+91${userPhoneNumber}`, code: otp })
+    .then(async (verification_check: any) => {
+      console.log("Verfication_check_stock", verification_check);
+      await Customer.findOne({ customerPhoneNumber: userPhoneNumber })
+        .then((customer: any) => {
+          const token = jwt.sign(
+            { _id: customer._id },
+            process.env.SECRET as string
+          );
+          res.cookie("token", token, {
+            expires: new Date(Date.now() + 999),
+            httpOnly: true,
+          });
+
+          const {
+            _id,
+            customerFirstName,
+            customerLastName,
+            customerPhoneNumber,
+            customerEmail,
+            role,
+          } = customer;
+
+          return res.status(200).json({
+            token,
+            customer: {
+              _id,
+              customerFirstName,
+              customerLastName,
+              customerPhoneNumber,
+              customerEmail,
+              role,
+            },
+          });
+        })
+        .catch((error: any) => {
+          return res
+            .status(400)
+            .json({ message: `Error with verify, ${error}` });
+        });
+    })
+    .catch((error: any) => {
+      res.status(400).json({
+        message: "failed for verfiy",
+      });
+    });
 };
 
 export const customerSignupOtp = async (req: Request, res: Response) => {
@@ -229,7 +224,35 @@ export const customerSignupVerify = async (req: Request, res: Response) => {
           customerPhoneNumber: userPhoneNumber,
         })
           .then((customer: any) => {
-            return res.status(200).json(customer);
+            const token = jwt.sign(
+              { _id: customer._id },
+              process.env.SECRET as string
+            );
+            res.cookie("token", token, {
+              expires: new Date(Date.now() + 999),
+              httpOnly: true,
+            });
+
+            const {
+              _id,
+              customerFirstName,
+              customerLastName,
+              customerPhoneNumber,
+              customerEmail,
+              role,
+            } = customer;
+
+            return res.status(200).json({
+              token,
+              customer: {
+                _id,
+                customerFirstName,
+                customerLastName,
+                customerPhoneNumber,
+                customerEmail,
+                role,
+              },
+            });
           })
           .catch((error: any) => {
             return res

@@ -3,7 +3,7 @@ const Category = require("../models/category");
 
 export const getCategoryById = async (req: Request, res:Response, next: NextFunction, id: Router) => {
     try {
-        const category = Category.findById({_id: id});
+        const category = await Category.findById({_id: id});
         req.category = category;
         next();
     } catch (error) {

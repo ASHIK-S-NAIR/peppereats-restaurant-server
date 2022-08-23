@@ -17,6 +17,7 @@ import {
   menuPutmenuImageValidationSchema,
   menuPutValidationSchema,
 } from "../middlewares/validationSchema/menuSchema";
+import { getAdminById } from "../middlewares/admin";
 
 const multer = require("multer");
 
@@ -26,6 +27,7 @@ const router = express.Router();
 
 router.param("menuId", getMenuById);
 router.param("categoryId", getCategoryById);
+router.param("adminId", getAdminById)
 
 router.post(
   "/menu/createmenu",
@@ -50,7 +52,7 @@ router.put(
   updateMenu
 );
 router.put(
-  "/menu/updatemenuimage/:menuId",
+  "/menu/updatemenuimage/:menuId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,

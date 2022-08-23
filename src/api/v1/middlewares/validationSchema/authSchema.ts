@@ -25,7 +25,7 @@ export const adminSignupValidationSchema = [
     .withMessage("user Phone Number is required")
     .isNumeric()
     .withMessage("user Phone Number must be number")
-    .isLength({ min:10, max: 10 })
+    .isLength({ min: 10, max: 10 })
     .withMessage("user phone number must be 10 digits"),
   body("userPassword")
     .isLength({ min: 6 })
@@ -33,13 +33,11 @@ export const adminSignupValidationSchema = [
 ];
 
 export const adminLoginValidationSchema = [
-  body("userPhoneNumber")
+  body("userEmail")
     .exists({ checkNull: true, checkFalsy: true })
-    .withMessage("user Phone Number is required")
-    .isNumeric()
-    .withMessage("user Phone Number must be number")
-    .isLength({ min:10, max:10 })
-    .withMessage("user phone number must be 10 digits"),
+    .withMessage("user Email is required")
+    .isString()
+    .withMessage("user Email must be string"),
   body("userPassword")
     .exists({ checkNull: true, checkFalsy: true })
     .withMessage("user password is required"),

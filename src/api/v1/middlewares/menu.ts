@@ -10,7 +10,6 @@ export const getMenuById = async (
   try {
     const menu = await Menu.findById({ _id: id });
     req.menu = menu;
-    // console.log(req.menu);
     next();
   } catch (error: any) {
     console.log("error message", error.message);
