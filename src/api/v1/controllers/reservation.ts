@@ -36,3 +36,34 @@ export const createReservation = async (
     }
   }
 };
+
+export const updateReservation = async (
+  req: Request<
+    {},
+    {},
+    {
+      reservationTable: "string";
+      reservationTime: "string";
+      reservationOrder: "array ";
+      reservationStatus: "string";
+    },
+    {}
+  >,
+  res: Response
+) => {
+  try {
+    await Reservation.findByIdAndUpdate(
+        { _id: req.reservation._id },
+        { $set: req.body },
+        { new: true }
+      );
+  
+      return res.status(200).json({
+        message: "Successfully updated the reservation",
+      });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Failed to updatereservation",
+    });
+  }
+};

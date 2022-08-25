@@ -12,12 +12,14 @@ import {
   categoryPostValidationSchema,
   categoryPutValidationSchema,
 } from "../middlewares/validationSchema/categorySchema";
+import { getAdminById } from "../middlewares/admin";
 const { getCategories, postCategory } = require("../controllers/category");
 
 router.param("categoryId", getCategoryById);
+router.param("adminId", getAdminById);
 
 router.post(
-  "/category/createcategory",
+  "/category/createcategory/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -28,7 +30,7 @@ router.post(
 router.get("/category/getallcategory", getCategories);
 router.get("/category/getCategory/:categoryId", getCategory);
 router.put(
-  "/category/updatecategory/:categoryId",
+  "/category/updatecategory/:categoryId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -37,7 +39,7 @@ router.put(
   updateCategory
 );
 router.delete(
-  "/category/deletecategory/:categoryId",
+  "/category/deletecategory/:categoryId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,

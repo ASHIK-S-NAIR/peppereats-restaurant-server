@@ -12,9 +12,8 @@ export const getMenuById = async (
     req.menu = menu;
     next();
   } catch (error: any) {
-    console.log("error message", error.message);
     return res.status(400).json({
-      message: "Failed to menu by id",
+      message: "Failed to get menu by id",
     });
   }
 };

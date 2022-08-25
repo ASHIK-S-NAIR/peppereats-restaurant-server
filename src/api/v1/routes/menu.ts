@@ -30,7 +30,7 @@ router.param("categoryId", getCategoryById);
 router.param("adminId", getAdminById)
 
 router.post(
-  "/menu/createmenu",
+  "/menu/createmenu/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -43,7 +43,7 @@ router.get("/menu/getallmenu", getAllMenu);
 router.get("/menu/getmenubycategory/:categoryId", getMenuByCategory);
 router.get("/menu/getmenu/:menuId", getMenu);
 router.put(
-  "/menu/updatemenu/:menuId",
+  "/menu/updatemenu/:menuId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -62,7 +62,7 @@ router.put(
   updateMenuImage
 );
 router.delete(
-  "/menu/deletemenu/:menuId",
+  "/menu/deletemenu/:menuId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,

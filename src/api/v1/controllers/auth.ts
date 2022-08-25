@@ -188,7 +188,7 @@ export const customerLoginVerify = async (req: Request, res: Response) => {
 
 export const customerSignupOtp = async (req: Request, res: Response) => {
   try {
-    const { userPhoneNumber, userFirstName, userLastName, userEmail } =
+    const { userPhoneNumber } =
       req.body;
     await client.verify.v2
       .services(process.env.TWILIO_SERVICE_ID as string)

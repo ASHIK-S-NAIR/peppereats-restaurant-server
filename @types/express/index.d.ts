@@ -6,9 +6,11 @@ declare global {
         interface Request {
             menu ?: any,
             category ?: any,
+            reservation ?: any,
             profile ?: any,
             auth ?: any,
             user ?: any
+            customer ?: any
         }
     }
 }

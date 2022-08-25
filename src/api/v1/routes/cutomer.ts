@@ -23,17 +23,28 @@ router.get(
   isAdmin,
   getAllCustomers
 );
-router.get("/customer/getcustomer/:customerId", getCustomer);
+router.get(
+  "/customer/getcustomer/:customerId/:adminId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  getCustomer
+);
 router.put(
-  "/customer/updatecustomer/:customerId",
+  "/customer/updatecustomer/:customerId/:adminId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
   customerPutValidationSchema,
   validateRequestSchema,
   updateCustomer
 );
 router.delete(
-  "/customer/deletecustomer/:customerId",
+  "/customer/deletecustomer/:customerId/:adminId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
   deleteCustomer
 );
-
 
 module.exports = router;
