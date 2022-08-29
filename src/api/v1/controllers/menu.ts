@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 const Menu = require("../models/menu");
+const Category = require("../models/category");
 const cloudinary = require("../utils/cloudinary");
 const fs = require("fs");
 const util = require("util");
@@ -22,6 +23,14 @@ export const createMenu = async (
   try {
     const { menuName, menuCategory, menuPrice, menuDescription } = req.body;
 
+    const category = await Category.findById(menuCategory);
+
+    if (!category) {
+      return res.status(400).json({
+        message: "Failed to find category",
+      });
+    }
+
     const menu = await Menu.create({
       menuName,
       menuCategory,
@@ -31,14 +40,11 @@ export const createMenu = async (
     await menu.save();
 
     const file = req.file;
-    console.log("file", file);
-    console.log("menu", menu._id);
 
     const result = await cloudinary.uploader.upload(file?.path, {
       folder: "peppereats/menu",
       public_id: `${menu.menuName}_${menu._id}`,
     });
-    console.log("result", result);
     await unlinkFile(file?.path);
 
     await Menu.findByIdAndUpdate(
@@ -100,6 +106,33 @@ export const updateMenu = async (req: Request, res: Response) => {
       { new: true }
     );
 
+    if (req.file) {
+      let result = await cloudinary.uploader.destroy(
+        `${req.menu.menuName}_${req.menu._id}`,
+        {
+          folder: "peppereats/menu",
+        }
+      );
+
+      const file = req.file;
+      result = await cloudinary.uploader.upload(file?.path, {
+        folder: "peppereats/menu",
+        public_id: `${req.menu.menuName}_${req.menu._id}`,
+      });
+
+      await unlinkFile(file?.path);
+
+      await Menu.findByIdAndUpdate(
+        { _id: req.menu._id },
+        {
+          $set: {
+            menuImage: { publicId: result.public_id, url: result.secure_url },
+          },
+        },
+        { new: true, useFindAndModify: false }
+      );
+    }
+
     return res.status(200).json({
       message: "Successfully updated the menu",
     });
@@ -139,7 +172,7 @@ export const updateMenuImage = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: "menuImge updated Succesfull" });
   } catch (error: any) {
-    console.log("errorMessage", error.message)
+    console.log("errorMessage", error.message);
     return res.status(400).json({
       message: "Failed to update menu Image from database",
     });

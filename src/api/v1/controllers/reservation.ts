@@ -23,11 +23,14 @@ export const createReservation = async (
       reservationOrder,
     } = req.body;
     try {
-      const reservation = await Reservation.create({
+      await Reservation.create({
         reservationCustomer,
         reservationTable,
         reservationTime,
         reservationOrder,
+      });
+      return res.status(200).json({
+        message: "Successfully created the reservation",
       });
     } catch (error) {
       return res.status(400).json({
@@ -51,10 +54,12 @@ export const updateReservation = async (
   >,
   res: Response
 ) => {
+
+  const {reservationTable, reservationTime, reservationOrder, reservationStatus} = req.body;
   try {
     await Reservation.findByIdAndUpdate(
         { _id: req.reservation._id },
-        { $set: req.body },
+        { $set: {reservationTable, reservationTime, reservationOrder, reservationStatus} },
         { new: true }
       );
   

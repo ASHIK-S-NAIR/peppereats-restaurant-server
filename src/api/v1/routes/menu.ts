@@ -49,6 +49,7 @@ router.put(
   isAdmin,
   menuPutValidationSchema,
   validateRequestSchema,
+  upload.single("menuImage"),
   updateMenu
 );
 router.put(

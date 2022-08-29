@@ -52,6 +52,7 @@ const reservationSchema = new Schema<IReservation>(
     reservationStatus: {
       type: String,
       enum: ["Unattended", "Verified", "PreCancellation", "PostCancellation"],
+      default: "Unattended"
     },
   },
   { timestamps: true }
