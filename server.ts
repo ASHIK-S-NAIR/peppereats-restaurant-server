@@ -5,6 +5,9 @@ import { connect } from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
 import helmet from "helmet";
+import moment from "moment";
+
+const ReservationTable = require("./src/api/v1/models/reservationTable");
 
 const categoryRoute = require("./src/api/v1/routes/category");
 const authRoute = require("./src/api/v1/routes/auth");
@@ -36,6 +39,159 @@ app.use("/api/v1", menuRoute);
 app.use("/api/v1", adminRoute);
 app.use("/api/v1", customerRoute);
 app.use("/api/v1", reservationRoute);
+
+for (let i = 0; i < 10; i++) {
+  const d = new Date();
+  d.setDate(d.getDate() + i);
+
+  // for(let i = 1; i<=18; i++){
+
+  // }
+
+  ReservationTable.create({
+    reservationTableDate: moment(d).format("DD-MM-yyyy"),
+    reservationTableTimeTable: [
+      {
+        time: "05:00PM",
+        reservationTable: [
+          { table: "T1" },
+          { table: "T2" },
+          { table: "T3" },
+          { table: "T4" },
+          { table: "T5" },
+          { table: "T6" },
+          { table: "T7" },
+          { table: "T8" },
+          { table: "T9" },
+          { table: "T10" },
+          { table: "T11" },
+          { table: "T12" },
+          { table: "T13" },
+          { table: "T14" },
+          { table: "T15" },
+          { table: "T16" },
+          { table: "T17" },
+          { table: "T18" },
+        ],
+      },
+      {
+        time: "06:00PM",
+        reservationTable: [
+          { table: "T1" },
+          { table: "T2" },
+          { table: "T3" },
+          { table: "T4" },
+          { table: "T5" },
+          { table: "T6" },
+          { table: "T7" },
+          { table: "T8" },
+          { table: "T9" },
+          { table: "T10" },
+          { table: "T11" },
+          { table: "T12" },
+          { table: "T13" },
+          { table: "T14" },
+          { table: "T15" },
+          { table: "T16" },
+          { table: "T17" },
+          { table: "T18" },
+        ],
+      },
+      {
+        time: "07:00PM",
+        reservationTable: [
+          { table: "T1" },
+          { table: "T2" },
+          { table: "T3" },
+          { table: "T4" },
+          { table: "T5" },
+          { table: "T6" },
+          { table: "T7" },
+          { table: "T8" },
+          { table: "T9" },
+          { table: "T10" },
+          { table: "T11" },
+          { table: "T12" },
+          { table: "T13" },
+          { table: "T14" },
+          { table: "T15" },
+          { table: "T16" },
+          { table: "T17" },
+          { table: "T18" },
+        ],
+      },
+      {
+        time: "08:00PM",
+        reservationTable: [
+          { table: "T1" },
+          { table: "T2" },
+          { table: "T3" },
+          { table: "T4" },
+          { table: "T5" },
+          { table: "T6" },
+          { table: "T7" },
+          { table: "T8" },
+          { table: "T9" },
+          { table: "T10" },
+          { table: "T11" },
+          { table: "T12" },
+          { table: "T13" },
+          { table: "T14" },
+          { table: "T15" },
+          { table: "T16" },
+          { table: "T17" },
+          { table: "T18" },
+        ],
+      },
+      {
+        time: "09:00PM",
+        reservationTable: [
+          { table: "T1" },
+          { table: "T2" },
+          { table: "T3" },
+          { table: "T4" },
+          { table: "T5" },
+          { table: "T6" },
+          { table: "T7" },
+          { table: "T8" },
+          { table: "T9" },
+          { table: "T10" },
+          { table: "T11" },
+          { table: "T12" },
+          { table: "T13" },
+          { table: "T14" },
+          { table: "T15" },
+          { table: "T16" },
+          { table: "T17" },
+          { table: "T18" },
+        ],
+      },
+      {
+        time: "10:00PM",
+        reservationTable: [
+          { table: "T1" },
+          { table: "T2" },
+          { table: "T3" },
+          { table: "T4" },
+          { table: "T5" },
+          { table: "T6" },
+          { table: "T7" },
+          { table: "T8" },
+          { table: "T9" },
+          { table: "T10" },
+          { table: "T11" },
+          { table: "T12" },
+          { table: "T13" },
+          { table: "T14" },
+          { table: "T15" },
+          { table: "T16" },
+          { table: "T17" },
+          { table: "T18" },
+        ],
+      },
+    ],
+  });
+}
 
 app.get("/", (req: Request, res: Response) => {
   console.log("Working properly");

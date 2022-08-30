@@ -1,8 +1,9 @@
 import { Schema, model } from "mongoose";
+import moment from 'moment';
 
 interface IReservation {
   reservationCustomer: String;
-  reservationDate: Date;
+  reservationDate: String;
   reservationTable: String;
   reservationTime: String;
   reservationOrder: [String];
@@ -16,8 +17,8 @@ const reservationSchema = new Schema<IReservation>(
       ref: "Customer",
     },
     reservationDate: {
-      type: Date,
-      default: Date.now,
+      type: String,
+      default: moment(Date.now()).format("DD-MM-yyyy"),
     },
     reservationTable: {
       type: String,
