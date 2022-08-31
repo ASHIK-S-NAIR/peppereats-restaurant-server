@@ -1,7 +1,9 @@
 import { json, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { createReservation } from "./reservation";
 const Admin = require("../models/admin");
 const Customer = require("../models/customer");
+const Reservation = require("../models/reservation");
 const client = require("twilio")(
   process.env.TWILIO_ACCOUNT_SID as string,
   process.env.TWILIO_AUTH_TOKEN as string
@@ -114,6 +116,7 @@ export const customerLoginOtp = async (req: Request, res: Response) => {
       customerPhoneNumber: userPhoneNumber,
     });
     if (!customer) {
+      console.log({ isCustomer: false });
       return res.status(200).json({ isCustomer: false });
     }
 
@@ -121,7 +124,7 @@ export const customerLoginOtp = async (req: Request, res: Response) => {
       .services(process.env.TWILIO_SERVICE_ID as string)
       .verifications.create({ to: `+91${userPhoneNumber}`, channel: "sms" })
       .then((verification: any) => {
-        console.log("verfication", verification);
+        console.log({ isCustomer: true, verification });
         return res.status(200).json({ isCustomer: true, verification });
       })
       .catch((error: any) => {
@@ -134,44 +137,62 @@ export const customerLoginOtp = async (req: Request, res: Response) => {
   }
 };
 
-export const customerLoginVerify = async (req: Request, res: Response) => {
+export const customerLoginVerify = async (
+  req: Request<
+    {},
+    {},
+    {
+      userPhoneNumber: "number";
+      otp: "number";
+      reservationCustomer: "string";
+      reservationTable: "string";
+      reservationTime: "string";
+      reservationOrder: "array";
+    },
+    {}
+  >,
+  res: Response
+) => {
   const { userPhoneNumber, otp } = req.body;
   await client.verify.v2
     .services(process.env.TWILIO_SERVICE_ID)
     .verificationChecks.create({ to: `+91${userPhoneNumber}`, code: otp })
     .then(async (verification_check: any) => {
-      console.log("Verfication_check_stock", verification_check);
       await Customer.findOne({ customerPhoneNumber: userPhoneNumber })
-        .then((customer: any) => {
-          const token = jwt.sign(
-            { _id: customer._id },
-            process.env.SECRET as string
-          );
-          res.cookie("token", token, {
-            expires: new Date(Date.now() + 999),
-            httpOnly: true,
-          });
+        .then(async (customer: any) => {
+          // const token = jwt.sign(
+          //   { _id: customer._id },
+          //   process.env.SECRET as string
+          // );
+          // res.cookie("token", token, {
+          //   expires: new Date(Date.now() + 999),
+          //   httpOnly: true,
+          // });
 
-          const {
-            _id,
-            customerFirstName,
-            customerLastName,
-            customerPhoneNumber,
-            customerEmail,
-            role,
-          } = customer;
+          // const {
+          //   _id,
+          //   customerFirstName,
+          //   customerLastName,
+          //   customerPhoneNumber,
+          //   customerEmail,
+          //   role,
+          // } = customer;
 
-          return res.status(200).json({
-            token,
-            customer: {
-              _id,
-              customerFirstName,
-              customerLastName,
-              customerPhoneNumber,
-              customerEmail,
-              role,
-            },
-          });
+          // return res.status(200).json({
+          //   token,
+          //   customer: {
+          //     _id,
+          //     customerFirstName,
+          //     customerLastName,
+          //     customerPhoneNumber,
+          //     customerEmail,
+          //     role,
+          //   },
+          // });
+
+          console.log("reached here at reservation section");
+
+          createReservation(req, res);
         })
         .catch((error: any) => {
           return res
@@ -188,8 +209,7 @@ export const customerLoginVerify = async (req: Request, res: Response) => {
 
 export const customerSignupOtp = async (req: Request, res: Response) => {
   try {
-    const { userPhoneNumber } =
-      req.body;
+    const { userPhoneNumber } = req.body;
     await client.verify.v2
       .services(process.env.TWILIO_SERVICE_ID as string)
       .verifications.create({ to: `+91${userPhoneNumber}`, channel: "sms" })
