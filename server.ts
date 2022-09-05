@@ -191,7 +191,7 @@ app.use("/api/v1", reservationRoute);
 
 app.get("/", (req: Request, res: Response) => {
   return res.status(200).json({
-    message: "all is well",
+    message: "hello world",
   });
 });
 
