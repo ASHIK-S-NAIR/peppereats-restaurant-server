@@ -244,35 +244,37 @@ export const customerSignupVerify = async (req: Request, res: Response) => {
           customerPhoneNumber: userPhoneNumber,
         })
           .then((customer: any) => {
-            const token = jwt.sign(
-              { _id: customer._id },
-              process.env.SECRET as string
-            );
-            res.cookie("token", token, {
-              expires: new Date(Date.now() + 999),
-              httpOnly: true,
-            });
+            // const token = jwt.sign(
+            //   { _id: customer._id },
+            //   process.env.SECRET as string
+            // );
+            // res.cookie("token", token, {
+            //   expires: new Date(Date.now() + 999),
+            //   httpOnly: true,
+            // });
 
-            const {
-              _id,
-              customerFirstName,
-              customerLastName,
-              customerPhoneNumber,
-              customerEmail,
-              role,
-            } = customer;
+            // const {
+            //   _id,
+            //   customerFirstName,
+            //   customerLastName,
+            //   customerPhoneNumber,
+            //   customerEmail,
+            //   role,
+            // } = customer;
 
-            return res.status(200).json({
-              token,
-              customer: {
-                _id,
-                customerFirstName,
-                customerLastName,
-                customerPhoneNumber,
-                customerEmail,
-                role,
-              },
-            });
+            // return res.status(200).json({
+            //   token,
+            //   customer: {
+            //     _id,
+            //     customerFirstName,
+            //     customerLastName,
+            //     customerPhoneNumber,
+            //     customerEmail,
+            //     role,
+            //   },
+            // });
+
+            createReservation(req, res);
           })
           .catch((error: any) => {
             return res

@@ -19,7 +19,7 @@ router.param("categoryId", getCategoryById);
 router.param("adminId", getAdminById);
 
 router.post(
-  "/category/createcategory/:adminId",
+  "/category/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -27,10 +27,10 @@ router.post(
   validateRequestSchema,
   postCategory
 );
-router.get("/category/getallcategory", getCategories);
-router.get("/category/getCategory/:categoryId", getCategory);
+router.get("/category", getCategories);
+router.get("/category/:categoryId", getCategory);
 router.put(
-  "/category/updatecategory/:categoryId/:adminId",
+  "/category/:categoryId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -39,7 +39,7 @@ router.put(
   updateCategory
 );
 router.delete(
-  "/category/deletecategory/:categoryId/:adminId",
+  "/category/:categoryId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,

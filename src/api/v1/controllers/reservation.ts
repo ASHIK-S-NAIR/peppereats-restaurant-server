@@ -42,22 +42,12 @@ export const createReservation = async (
             reservationTableTimeTableItem.time === reservation.reservationTime
         );
 
-      console.log(
-        "reservationTableTimeTableItem",
-        reservationTableTimeTableItem
-      );
-
       reservationTableTimeTableItem.reservationTable.map(
         (reservationTableItem: any) => {
           reservationTableItem.table === reservation.reservationTable
             ? (reservationTableItem.reservation = reservation._id)
             : "";
         }
-      );
-
-      console.log(
-        "reservationTableTimeTableItem",
-        reservationTableTimeTableItem
       );
 
       reservationTableDB.reservationTableTimeTable.map(
@@ -67,11 +57,6 @@ export const createReservation = async (
                 reservationTableTimeTableItem.reservationTable)
             : "";
         }
-      );
-
-      console.log(
-        "reservationTableTimeTable",
-        reservationTableDB.reservationTableTimeTable[5]
       );
 
       await ReservationTable.findOneAndUpdate(
@@ -96,86 +81,6 @@ export const createReservation = async (
     }
   }
 };
-
-// export const createReservationBackend = async (
-//   reservationCustomer: string,
-//   reservationTable: string,
-//   reservationTime: string,
-//   reservationOrder: [string]
-// ) => {
-//   {
-//     try {
-//       const reservation = await Reservation.create({
-//         reservationCustomer,
-//         reservationTable,
-//         reservationTime,
-//         reservationOrder,
-//       });
-
-//       const reservationTableDB = await ReservationTable.findOne({
-//         reservationTableDate: reservation.reservationDate,
-//       });
-
-//       const reservationTableTimeTableItem =
-//         reservationTableDB.reservationTableTimeTable.find(
-//           (reservationTableTimeTableItem: any) =>
-//             reservationTableTimeTableItem.time === reservation.reservationTime
-//         );
-
-//       console.log(
-//         "reservationTableTimeTableItem",
-//         reservationTableTimeTableItem
-//       );
-
-//       reservationTableTimeTableItem.reservationTable.map(
-//         (reservationTableItem: any) => {
-//           reservationTableItem.table === reservation.reservationTable
-//             ? (reservationTableItem.reservation = reservation._id)
-//             : "";
-//         }
-//       );
-
-//       console.log(
-//         "reservationTableTimeTableItem",
-//         reservationTableTimeTableItem
-//       );
-
-//       reservationTableDB.reservationTableTimeTable.map(
-//         (reservationTableTimeTableItemNew: any) => {
-//           reservationTableTimeTableItemNew.time === reservation.reservationTime
-//             ? (reservationTableTimeTableItemNew.reservationTable =
-//                 reservationTableTimeTableItem.reservationTable)
-//             : "";
-//         }
-//       );
-
-//       console.log(
-//         "reservationTableTimeTable",
-//         reservationTableDB.reservationTableTimeTable[5]
-//       );
-
-//       await ReservationTable.findOneAndUpdate(
-//         {
-//           reservationTableDate: moment(Date.now()).format("DD-MM-yyyy"),
-//         },
-//         {
-//           $set: {
-//             reservationTableTimeTable:
-//               reservationTableDB.reservationTableTimeTable,
-//           },
-//         },
-//         { new: true }
-//       );
-//       return res.status(200).json({
-//         message: "Successfully created the reservation",
-//       });
-//     } catch (error) {
-//       return res.status(400).json({
-//         message: "Failed to create reservation",
-//       });
-//     }
-//   }
-// };
 
 export const updateReservation = async (
   req: Request<

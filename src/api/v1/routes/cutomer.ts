@@ -17,21 +17,21 @@ router.param("customerId", getCustomerById);
 router.param("adminId", getAdminById);
 
 router.get(
-  "/customer/getallcustomers/:adminId",
+  "/customer/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
   getAllCustomers
 );
 router.get(
-  "/customer/getcustomer/:customerId/:adminId",
+  "/customer/:customerId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
   getCustomer
 );
 router.put(
-  "/customer/updatecustomer/:customerId/:adminId",
+  "/customer/:customerId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -40,7 +40,7 @@ router.put(
   updateCustomer
 );
 router.delete(
-  "/customer/deletecustomer/:customerId/:adminId",
+  "/customer/:customerId/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,

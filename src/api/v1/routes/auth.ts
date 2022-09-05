@@ -16,26 +16,26 @@ import {
 const router = express.Router();
 
 router.post(
-  "/adminsignup",
+  "/admin/signup",
   adminSignupValidationSchema,
   validateRequestSchema,
   adminSignup
 );
 
 router.post(
-  "/adminlogin",
+  "/admin/login",
   adminLoginValidationSchema,
   validateRequestSchema,
   adminLogin
 );
 
-router.post("/customerloginotp", customerLoginOtp);
+router.post("/customer/loginotp", customerLoginOtp);
 
-router.post("/customerloginverify", customerLoginVerify);
+router.post("/customer/loginverify", customerLoginVerify);
 
-router.post("/customersignupotp", customerSignupOtp);
+router.post("/customer/signupotp", customerSignupOtp);
 
-router.post("/customersignupverify", customerSignupVerify);
+router.post("/customer/signupverify", customerSignupVerify);
 
 router.post("/logout", logout);
 

@@ -9,14 +9,14 @@ const router = express.Router();
 router.param("adminId", getAdminById);
 
 router.get(
-  "/admin/getadmin/:adminId",
+  "/admin/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
   getAdmin
 );
 router.put(
-  "/admin/updateadmin/:adminId",
+  "/admin/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
@@ -25,7 +25,7 @@ router.put(
   updateAdmin
 );
 router.delete(
-  "/admin/deleteadmin/:adminId",
+  "/admin/:adminId",
   isSignedIn,
   isAuthenticated,
   isAdmin,
