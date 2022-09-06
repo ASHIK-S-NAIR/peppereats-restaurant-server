@@ -147,7 +147,7 @@ export const customerLoginVerify = async (
       reservationCustomer: "string";
       reservationTable: "string";
       reservationTime: "string";
-      reservationOrder: "array";
+      reservationOrders: "array";
     },
     {}
   >,
@@ -210,6 +210,7 @@ export const customerLoginVerify = async (
 export const customerSignupOtp = async (req: Request, res: Response) => {
   try {
     const { userPhoneNumber } = req.body;
+    console.log("reached here")
     await client.verify.v2
       .services(process.env.TWILIO_SERVICE_ID as string)
       .verifications.create({ to: `+91${userPhoneNumber}`, channel: "sms" })
@@ -228,7 +229,25 @@ export const customerSignupOtp = async (req: Request, res: Response) => {
   }
 };
 
-export const customerSignupVerify = async (req: Request, res: Response) => {
+export const customerSignupVerify = async (
+  req: Request<
+    {},
+    {},
+    {
+      userPhoneNumber: "number";
+      userFirstName: "string";
+      userLastName: "string";
+      userEmail: "string";
+      otp: "number";
+      reservationCustomer: "string";
+      reservationTable: "string";
+      reservationTime: "string";
+      reservationOrders: "array";
+    },
+    {}
+  >,
+  res: Response
+) => {
   const { userPhoneNumber, userFirstName, userLastName, userEmail, otp } =
     req.body;
   try {

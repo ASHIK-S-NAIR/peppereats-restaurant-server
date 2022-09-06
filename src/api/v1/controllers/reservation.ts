@@ -11,7 +11,7 @@ export const createReservation = async (
       reservationCustomer: "string";
       reservationTable: "string";
       reservationTime: "string";
-      reservationOrder: "array";
+      reservationOrders: "array";
     },
     {}
   >,
@@ -22,14 +22,14 @@ export const createReservation = async (
       reservationCustomer,
       reservationTable,
       reservationTime,
-      reservationOrder,
+      reservationOrders,
     } = req.body;
     try {
       const reservation = await Reservation.create({
         reservationCustomer,
         reservationTable,
         reservationTime,
-        reservationOrder,
+        reservationOrders,
       });
 
       const reservationTableDB = await ReservationTable.findOne({
@@ -75,6 +75,7 @@ export const createReservation = async (
         message: "Successfully created the reservation",
       });
     } catch (error) {
+      console.log("error", error);
       return res.status(400).json({
         message: "Failed to create reservation",
       });
