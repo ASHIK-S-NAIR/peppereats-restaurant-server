@@ -15,6 +15,7 @@ const menuRoute = require("./src/api/v1/routes/menu");
 const adminRoute = require("./src/api/v1/routes/admin");
 const customerRoute = require("./src/api/v1/routes/cutomer");
 const reservationRoute = require("./src/api/v1/routes/reservation");
+const reservationTableRoute = require("./src/api/v1/routes/reservationTable");
 
 const app: Express = express();
 
@@ -39,6 +40,7 @@ app.use("/api/v1", menuRoute);
 app.use("/api/v1", adminRoute);
 app.use("/api/v1", customerRoute);
 app.use("/api/v1", reservationRoute);
+app.use("/api/v1", reservationTableRoute);
 
 // for (let i = 0; i < 10; i++) {
 //   const d = new Date();

@@ -144,7 +144,6 @@ export const customerLoginVerify = async (
     {
       userPhoneNumber: "number";
       otp: "number";
-      reservationCustomer: "string";
       reservationTable: "string";
       reservationTime: "string";
       reservationOrders: "array";
@@ -154,10 +153,12 @@ export const customerLoginVerify = async (
   res: Response
 ) => {
   const { userPhoneNumber, otp } = req.body;
+  console.log("reached her 1");
   await client.verify.v2
     .services(process.env.TWILIO_SERVICE_ID)
     .verificationChecks.create({ to: `+91${userPhoneNumber}`, code: otp })
     .then(async (verification_check: any) => {
+      console.log("reached her 2");
       await Customer.findOne({ customerPhoneNumber: userPhoneNumber })
         .then(async (customer: any) => {
           // const token = jwt.sign(
@@ -192,7 +193,7 @@ export const customerLoginVerify = async (
 
           console.log("reached here at reservation section");
 
-          createReservation(req, res);
+          createReservation(req, res, customer);
         })
         .catch((error: any) => {
           return res
@@ -201,6 +202,7 @@ export const customerLoginVerify = async (
         });
     })
     .catch((error: any) => {
+      console.log("error", error)
       res.status(400).json({
         message: "failed for verfiy",
       });
@@ -239,7 +241,6 @@ export const customerSignupVerify = async (
       userLastName: "string";
       userEmail: "string";
       otp: "number";
-      reservationCustomer: "string";
       reservationTable: "string";
       reservationTime: "string";
       reservationOrders: "array";
@@ -256,6 +257,10 @@ export const customerSignupVerify = async (
       .verificationChecks.create({ to: `+91${userPhoneNumber}`, code: otp })
       .then(async (verification_check: any) => {
         console.log("Verfication_check_stock", verification_check);
+        console.log("customerFirstName", userFirstName);
+        console.log("customerLstName", userLastName);
+        console.log("customerEmail", userEmail);
+        console.log("customerPhoneNumber", userPhoneNumber);
         await Customer.create({
           customerFirstName: userFirstName,
           customerLastName: userLastName,
@@ -292,8 +297,8 @@ export const customerSignupVerify = async (
             //     role,
             //   },
             // });
-
-            createReservation(req, res);
+            console.log("custoemr", customer);
+            createReservation(req, res, customer);
           })
           .catch((error: any) => {
             return res

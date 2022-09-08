@@ -8,25 +8,24 @@ export const createReservation = async (
     {},
     {},
     {
-      reservationCustomer: "string";
       reservationTable: "string";
       reservationTime: "string";
       reservationOrders: "array";
     },
     {}
   >,
-  res: Response
+  res: Response,
+  customer: Object
 ) => {
   {
     const {
-      reservationCustomer,
       reservationTable,
       reservationTime,
       reservationOrders,
     } = req.body;
     try {
       const reservation = await Reservation.create({
-        reservationCustomer,
+        reservationCustomer: customer,
         reservationTable,
         reservationTime,
         reservationOrders,

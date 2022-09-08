@@ -7,6 +7,7 @@ declare global {
             menu ?: any,
             category ?: any,
             reservation ?: any,
+            reservationTable ?: any,
             profile ?: any,
             auth ?: any,
             user ?: any
