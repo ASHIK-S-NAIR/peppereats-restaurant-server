@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import moment from 'moment';
+import moment from "moment";
 
 interface IReservation {
   reservationCustomer: String;
@@ -13,8 +13,13 @@ interface IReservation {
 const reservationSchema = new Schema<IReservation>(
   {
     reservationCustomer: {
-      type: Schema.Types.ObjectId,
-      ref: "Customer",
+      customerId: {
+        type: Schema.Types.ObjectId,
+        ref: "Customer",
+      },
+      customerName: {
+        type: String,
+      },
     },
     reservationDate: {
       type: String,
@@ -49,11 +54,16 @@ const reservationSchema = new Schema<IReservation>(
       enum: ["05:00PM", "06:00PM", "07:00PM", "08:00PM", "09:00PM", "10:00PM"],
       required: true,
     },
-    reservationOrder: [{ type: Schema.Types.ObjectId, ref: "Menu" }],
+    reservationOrder: [
+      {
+        menuId: { type: Schema.Types.ObjectId, ref: "Menu" },
+        menuName: { type: String },
+      },
+    ],
     reservationStatus: {
       type: String,
       enum: ["Unattended", "Verified", "PreCancellation", "PostCancellation"],
-      default: "Unattended"
+      default: "Unattended",
     },
   },
   { timestamps: true }

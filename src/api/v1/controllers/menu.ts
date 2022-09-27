@@ -20,6 +20,7 @@ export const createMenu = async (
   >,
   res: Response
 ) => {
+  console.log("reached here 1");
   try {
     const { menuName, menuCategory, menuPrice, menuDescription } = req.body;
 
@@ -30,14 +31,19 @@ export const createMenu = async (
         message: "Failed to find category",
       });
     }
+    console.log("reached here 2");
 
     const menu = await Menu.create({
       menuName,
-      menuCategory,
+      menuCategory: {
+        categoryId: category._id,
+        categoryName: category.categoryName,
+      },
       menuPrice,
       menuDescription,
     });
     await menu.save();
+    console.log("reached here 3");
 
     const file = req.file;
 
@@ -46,6 +52,7 @@ export const createMenu = async (
       public_id: `${menu.menuName}_${menu._id}`,
     });
     await unlinkFile(file?.path);
+    console.log("reached here 4");
 
     await Menu.findByIdAndUpdate(
       { _id: menu._id },
@@ -57,7 +64,19 @@ export const createMenu = async (
       { new: true, useFindAndModify: false }
     );
 
-    res.status(200).json({ message: "upload Succesfull" });
+    category.menuList.push({
+      menuId: menu._id,
+      menuName: menu.menuName,
+    });
+
+    await Category.findByIdAndUpdate(
+      { _id: category._id },
+      { $set: { menuList: category.menuList } },
+      { new: true }
+    );
+    console.log("reached here 5");
+
+    return res.status(200).json({ message: "upload Succesfull" });
   } catch (error: any) {
     return res.status(400).json({
       message: "Failed to upload menu",

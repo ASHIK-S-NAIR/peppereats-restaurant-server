@@ -10,6 +10,7 @@ export const getReservationTableById = async (
   try {
     const reservationTable = await ReservationTable.findById({ _id: id });
     req.reservationTable = reservationTable;
+    console.log("req.reservationTable", req.reservationTable);
     next();
   } catch (error) {
     return res.status(400).json({

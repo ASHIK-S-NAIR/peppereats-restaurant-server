@@ -11,13 +11,16 @@ const categorySchema = new Schema<ICategory>(
       type: String,
       required: true,
       unique: true,
-      maxlength: 32
+      maxlength: 32,
     },
     menuList: [
       {
-        menu: {
+        menuId: {
           type: Schema.Types.ObjectId,
           ref: "Menu",
+        },
+        menuName: {
+          type: String,
         },
       },
     ],
@@ -25,4 +28,4 @@ const categorySchema = new Schema<ICategory>(
   { timestamps: true }
 );
 
-module.exports = model<ICategory>('Category', categorySchema);
+module.exports = model<ICategory>("Category", categorySchema);

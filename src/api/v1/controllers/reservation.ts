@@ -15,17 +15,17 @@ export const createReservation = async (
     {}
   >,
   res: Response,
-  customer: Object
+  customer: any
 ) => {
   {
-    const {
-      reservationTable,
-      reservationTime,
-      reservationOrders,
-    } = req.body;
+    const { reservationTable, reservationTime, reservationOrders } = req.body;
+    console.log("customer Now", customer);
     try {
       const reservation = await Reservation.create({
-        reservationCustomer: customer,
+        reservationCustomer: {
+          customerId: customer._id,
+          customerName: customer.customerFirstName
+        },
         reservationTable,
         reservationTime,
         reservationOrders,

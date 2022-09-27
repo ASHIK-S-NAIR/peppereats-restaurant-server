@@ -1,5 +1,9 @@
 import express, { NextFunction } from "express";
-import { getAllReservationTables, getReservationTable } from "../controllers/reservationTable";
+import {
+  getAllReservationTables,
+  getReservationTable,
+  getReservationTableByDate,
+} from "../controllers/reservationTable";
 import { getAdminById } from "../middlewares/admin";
 import { isAdmin, isAuthenticated, isSignedIn } from "../middlewares/auth";
 import { getReservationTableById } from "../middlewares/reservationTable";
@@ -19,6 +23,13 @@ router.get(
   isAuthenticated,
   isAdmin,
   getAllReservationTables
+);
+router.get(
+  "/reservationtable/date/:adminId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  getReservationTableByDate
 );
 router.get(
   "/reservationtable/:reservationTableId/:adminId",
