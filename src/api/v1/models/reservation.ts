@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import moment from "moment";
+import { isStringLiteral } from "typescript";
 
 interface IReservation {
   reservationCustomer: String;
@@ -17,7 +18,16 @@ const reservationSchema = new Schema<IReservation>(
         type: Schema.Types.ObjectId,
         ref: "Customer",
       },
-      customerName: {
+      customerFirstName: {
+        type: String,
+      },
+      customerLastName: {
+        type: String,
+      },
+      customerPhoneNumber: {
+        type: Number,
+      },
+      customerEmail: {
         type: String,
       },
     },
